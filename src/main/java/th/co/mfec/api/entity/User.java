@@ -15,7 +15,7 @@ public class User {
   @Id
   @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Integer id;
 
   @Column(name = "user_name")
   private String username;
@@ -33,7 +33,7 @@ public class User {
   private Date expiredDate;
 
   @Column(name = "deleted_flag")
-  private String deleteFlag;
+  private Character deleteFlag;
 
   @Column(name = "created_by")
   private Integer createdBy;
