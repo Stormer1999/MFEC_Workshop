@@ -1,13 +1,21 @@
 package th.co.mfec.api.controller.user;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import th.co.mfec.api.model.common.SuccessResponse;
+import th.co.mfec.api.model.user.UserRequest;
+import th.co.mfec.api.model.user.UserResponse;
+import th.co.mfec.api.service.UserService;
 
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
+
+  private final UserService userService;
+
+  public UserController(UserService userService) {
+    this.userService = userService;
+  }
 
   // http://localhost:8080/api/v1/user/register
 
@@ -19,5 +27,16 @@ public class UserController {
   @GetMapping("/test/{id}")
   public String test(@PathVariable String id) {
     return id;
+  }
+
+  @PostMapping("/register")
+  public ResponseEntity<SuccessResponse<UserResponse>> register(
+      @RequestBody UserRequest userRequest) {
+    SuccessResponse<UserResponse> successResponse = new SuccessResponse<>();
+    UserResponse userResponse = userService.createUser(userRequest);
+    successResponse.setData(userResponse);
+
+    return ResponseEntity.ok(successResponse);
+    // return ResponseEntity.ok(new SuccessResponse<>(userService.createUser(userRequest)));
   }
 }
