@@ -29,6 +29,12 @@ public class UserController {
     return id;
   }
 
+  //  @PostMapping("/create")
+  //  public ResponseEntity<SuccessResponse<UserResponse>> create(
+  //      @RequestBody UserRequest userRequest) {
+  //    return null;
+  //  }
+
   @PostMapping("/register")
   public ResponseEntity<SuccessResponse<UserResponse>> register(
       @RequestBody UserRequest userRequest) {

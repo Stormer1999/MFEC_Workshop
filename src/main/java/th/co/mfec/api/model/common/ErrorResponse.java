@@ -15,11 +15,15 @@ public class ErrorResponse<T> {
   private T error;
 
   public ErrorResponse() {
-    this.status = new StatusResponse(StatusCode.SUC_CODE_500, StatusCode.SUC_DESC_500, new Date());
+    this.status = new StatusResponse(StatusCode.ERR_CODE_500, StatusCode.ERR_DESC_500, new Date());
+  }
+
+  public ErrorResponse(String code, String desc) {
+    this.status = new StatusResponse(code, desc, new Date());
   }
 
   public ErrorResponse(T error) {
-    this.status = new StatusResponse(StatusCode.SUC_CODE_500, StatusCode.SUC_DESC_500, new Date());
+    this.status = new StatusResponse(StatusCode.ERR_CODE_500, StatusCode.ERR_DESC_500, new Date());
     this.error = error;
   }
 
