@@ -1,6 +1,7 @@
 package th.co.mfec.api.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,11 +23,7 @@ import java.util.List;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-  private final JwtUtil jwtUtil;
-
-  public JwtFilter(JwtUtil jwtUtil) {
-    this.jwtUtil = jwtUtil;
-  }
+  @Autowired private JwtUtil jwtUtil;
 
   @Override
   protected void doFilterInternal(

@@ -3,8 +3,7 @@ package th.co.mfec.api.controller.user;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import th.co.mfec.api.model.common.SuccessResponse;
-import th.co.mfec.api.model.user.UserRequest;
-import th.co.mfec.api.model.user.UserResponse;
+import th.co.mfec.api.model.user.*;
 import th.co.mfec.api.service.UserService;
 
 @RestController
@@ -29,20 +28,26 @@ public class UserController {
     return id;
   }
 
-  //  @PostMapping("/create")
-  //  public ResponseEntity<SuccessResponse<UserResponse>> create(
-  //      @RequestBody UserRequest userRequest) {
-  //    return null;
-  //  }
+  @PostMapping("/create")
+  public ResponseEntity<SuccessResponse<UserResponse>> create(
+      @RequestBody UserRequest userRegisterRequest) {
+     return ResponseEntity.ok(new SuccessResponse<>(userService.createUser(userRegisterRequest)));
+  }
 
   @PostMapping("/register")
-  public ResponseEntity<SuccessResponse<UserResponse>> register(
-      @RequestBody UserRequest userRequest) {
-    SuccessResponse<UserResponse> successResponse = new SuccessResponse<>();
-    UserResponse userResponse = userService.createUser(userRequest);
-    successResponse.setData(userResponse);
+  public ResponseEntity<SuccessResponse<UserRegisterResponse>> register(
+      @RequestBody UserRegisterRequest userRegisterRequest) {
+//    SuccessResponse<UserRegisterResponse> successResponse = new SuccessResponse<>();
+//    UserRegisterResponse userResponse = userService.registerUser(userRegisterRequest);
+//    successResponse.setData(userResponse);
 
-    return ResponseEntity.ok(successResponse);
-    // return ResponseEntity.ok(new SuccessResponse<>(userService.createUser(userRequest)));
+//    return ResponseEntity.ok(successResponse);
+    return ResponseEntity.ok(new SuccessResponse<>(userService.registerUser(userRegisterRequest)));
+  }
+
+  @PostMapping("/authen")
+  public ResponseEntity<SuccessResponse<UserAuthenResponse>> authen(
+      @RequestBody UserAuthenRequest userAuthenRequest) {
+    return ResponseEntity.ok(new SuccessResponse<>(userService.authenUser(userAuthenRequest)));
   }
 }
