@@ -5,35 +5,34 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "ADDRESS")
 @Getter
 @Setter
-public class User {
+public class Address {
 
   @Id
   @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Column(name = "user_name")
-  private String username;
+  @Column(name = "line_1")
+  private String line1;
 
-  @Column(name = "password")
-  private String password;
+  @Column(name = "line_2")
+  private String line2;
 
-  @Column(name = "is_enabled")
-  private Character isEnable;
+  @Column(name = "postcode")
+  private String postcode;
 
-  @Column(name = "is_locked")
-  private Character isLocked;
+  @Column(name = "type")
+  private String type;
 
-  @Column(name = "expired_date")
-  private Date expiredDate;
+  @Column(name = "prefer")
+  private String prefer;
 
-  @Column(name = "deleted_flag")
+  @Column(name = "delete_flag")
   private Character deleteFlag;
 
   @Column(name = "created_by")
@@ -54,9 +53,7 @@ public class User {
   @Column(name = "deleted_at")
   private Date deletedAt;
 
-  @OneToOne(mappedBy = "user")
-  private UserProfile userProfile;
-
-  @OneToMany(mappedBy = "user")
-  private List<Address> addresses;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 }

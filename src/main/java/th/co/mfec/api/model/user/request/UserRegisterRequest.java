@@ -1,11 +1,11 @@
-package th.co.mfec.api.model.user;
+package th.co.mfec.api.model.user.request;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class UserAuthenRequest {
+public class UserRegisterRequest {
 
   private String username;
 

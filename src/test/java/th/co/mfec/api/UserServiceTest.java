@@ -3,8 +3,8 @@ package th.co.mfec.api;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import th.co.mfec.api.model.user.UserRequest;
-import th.co.mfec.api.model.user.UserResponse;
+import th.co.mfec.api.model.user.request.UserRequest;
+import th.co.mfec.api.model.user.response.UserResponse;
 import th.co.mfec.api.service.UserService;
 
 @SpringBootTest

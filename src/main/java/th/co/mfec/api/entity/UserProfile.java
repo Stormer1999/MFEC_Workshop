@@ -5,35 +5,39 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "USER_PROFILE")
 @Getter
 @Setter
-public class User {
+public class UserProfile {
 
   @Id
   @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Column(name = "user_name")
-  private String username;
+  @Column(name = "first_name_th")
+  private String firstNameTh;
 
-  @Column(name = "password")
-  private String password;
+  @Column(name = "last_name_th")
+  private String lastNameTh;
 
-  @Column(name = "is_enabled")
-  private Character isEnable;
+  @Column(name = "first_name_en")
+  private String firstNameEn;
 
-  @Column(name = "is_locked")
-  private Character isLocked;
+  @Column(name = "last_name_en")
+  private String lastNameEn;
 
-  @Column(name = "expired_date")
-  private Date expiredDate;
+  @Column(name = "mobile_number")
+  private String mobileNumber;
 
-  @Column(name = "deleted_flag")
+  @Column(name = "birth_date")
+  private Date birthDate;
+
+  // common
+
+  @Column(name = "delete_flag")
   private Character deleteFlag;
 
   @Column(name = "created_by")
@@ -54,9 +58,7 @@ public class User {
   @Column(name = "deleted_at")
   private Date deletedAt;
 
-  @OneToOne(mappedBy = "user")
-  private UserProfile userProfile;
-
-  @OneToMany(mappedBy = "user")
-  private List<Address> addresses;
+  @OneToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 }

@@ -1,4 +1,4 @@
-package th.co.mfec.api.model.user;
+package th.co.mfec.api.model.user.request;
 
 import lombok.Getter;
 import lombok.Setter;
