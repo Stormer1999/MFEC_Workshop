@@ -6,6 +6,8 @@ import th.co.mfec.api.model.common.SuccessResponse;
 import th.co.mfec.api.model.user.*;
 import th.co.mfec.api.service.UserService;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
@@ -30,18 +32,13 @@ public class UserController {
 
   @PostMapping("/create")
   public ResponseEntity<SuccessResponse<UserResponse>> create(
-      @RequestBody UserRequest userRegisterRequest) {
-     return ResponseEntity.ok(new SuccessResponse<>(userService.createUser(userRegisterRequest)));
+      @Valid @RequestBody UserRequest userRegisterRequest) {
+    return ResponseEntity.ok(new SuccessResponse<>(userService.createUser(userRegisterRequest)));
   }
 
   @PostMapping("/register")
   public ResponseEntity<SuccessResponse<UserRegisterResponse>> register(
       @RequestBody UserRegisterRequest userRegisterRequest) {
-//    SuccessResponse<UserRegisterResponse> successResponse = new SuccessResponse<>();
-//    UserRegisterResponse userResponse = userService.registerUser(userRegisterRequest);
-//    successResponse.setData(userResponse);
-
-//    return ResponseEntity.ok(successResponse);
     return ResponseEntity.ok(new SuccessResponse<>(userService.registerUser(userRegisterRequest)));
   }
 
@@ -49,5 +46,10 @@ public class UserController {
   public ResponseEntity<SuccessResponse<UserAuthenResponse>> authen(
       @RequestBody UserAuthenRequest userAuthenRequest) {
     return ResponseEntity.ok(new SuccessResponse<>(userService.authenUser(userAuthenRequest)));
+  }
+
+  @GetMapping("/refresh-token")
+  public ResponseEntity<SuccessResponse<UserAuthenResponse>> refreshToken() {
+    return ResponseEntity.ok(new SuccessResponse<>(userService.refreshToken()));
   }
 }

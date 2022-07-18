@@ -2,6 +2,7 @@ package th.co.mfec.api.service;
 
 import io.jsonwebtoken.Jwts;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import th.co.mfec.api.constant.StatusCode;
@@ -79,6 +80,20 @@ public class UserService {
       throw new BaseException(
           HttpStatus.UNAUTHORIZED, StatusCode.ERR_CODE_401, StatusCode.ERR_DESC_401);
     }
+
+    String token = jwtUtil.generateToken(user.getUsername());
+    UserAuthenResponse userAuthenResponse = new UserAuthenResponse();
+    userAuthenResponse.setUserId(user.getId());
+    userAuthenResponse.setUsername(user.getUsername());
+    userAuthenResponse.setToken(token);
+
+    return userAuthenResponse;
+  }
+
+  public UserAuthenResponse refreshToken() {
+    String username =
+        (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User user = userRepository.findByUsername(username);
 
     String token = jwtUtil.generateToken(user.getUsername());
     UserAuthenResponse userAuthenResponse = new UserAuthenResponse();
