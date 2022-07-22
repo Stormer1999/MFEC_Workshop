@@ -125,17 +125,17 @@ public class UserService {
 
   public UserProfileResponse updateUserProfile(UserProfileRequest userProfileRequest) {
     String username =
-        (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     User user = userRepository.findByUsername(username);
 
     UserProfile userProfile = new UserProfile();
     userProfile.setUser(user);
     userProfile.setFirstNameTh(userProfileRequest.getFirstNameTh());
-    userProfile.setLastNameTh(userProfile.getLastNameTh());
-    userProfile.setFirstNameEn(userProfile.getFirstNameEn());
-    userProfile.setLastNameEn(userProfile.getLastNameEn());
-    userProfile.setMobileNumber(userProfile.getMobileNumber());
-    userProfile.setBirthDate(userProfile.getBirthDate());
+    userProfile.setLastNameTh(userProfileRequest.getLastNameTh());
+    userProfile.setFirstNameEn(userProfileRequest.getFirstNameEn());
+    userProfile.setLastNameEn(userProfileRequest.getLastNameEn());
+    userProfile.setMobileNumber(userProfileRequest.getMobileNumber());
+    userProfile.setBirthDate(userProfileRequest.getBirthDate());
     userProfile.setDeleteFlag('N');
     userProfile.setCreatedBy(user.getId());
     userProfile.setCreatedAt(new Date());
