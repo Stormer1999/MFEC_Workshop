@@ -3,14 +3,8 @@ package th.co.mfec.api.controller.user;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import th.co.mfec.api.model.common.SuccessResponse;
-import th.co.mfec.api.model.user.request.UserAuthenRequest;
-import th.co.mfec.api.model.user.request.UserProfileRequest;
-import th.co.mfec.api.model.user.request.UserRegisterRequest;
-import th.co.mfec.api.model.user.request.UserRequest;
-import th.co.mfec.api.model.user.response.UserAuthenResponse;
-import th.co.mfec.api.model.user.response.UserProfileResponse;
-import th.co.mfec.api.model.user.response.UserRegisterResponse;
-import th.co.mfec.api.model.user.response.UserResponse;
+import th.co.mfec.api.model.user.request.*;
+import th.co.mfec.api.model.user.response.*;
 import th.co.mfec.api.service.UserService;
 
 import javax.validation.Valid;
@@ -65,5 +59,12 @@ public class UserController {
       @Valid @RequestBody UserProfileRequest userProfileRequest) {
     return ResponseEntity.ok(
         new SuccessResponse<>(userService.updateUserProfile(userProfileRequest)));
+  }
+
+  @PostMapping("/address")
+  public ResponseEntity<SuccessResponse<UserAddressResponse>> address(
+      @Valid @RequestBody UserAddressRequest userAddressRequest) {
+    return ResponseEntity.ok(
+        new SuccessResponse<>(userService.updateUserAddress(userAddressRequest)));
   }
 }

@@ -5,23 +5,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import th.co.mfec.api.constant.StatusCode;
+import th.co.mfec.api.entity.Address;
 import th.co.mfec.api.entity.User;
 import th.co.mfec.api.entity.UserProfile;
 import th.co.mfec.api.exception.BaseException;
-import th.co.mfec.api.model.user.request.UserAuthenRequest;
-import th.co.mfec.api.model.user.request.UserProfileRequest;
-import th.co.mfec.api.model.user.request.UserRegisterRequest;
-import th.co.mfec.api.model.user.request.UserRequest;
-import th.co.mfec.api.model.user.response.UserAuthenResponse;
-import th.co.mfec.api.model.user.response.UserProfileResponse;
-import th.co.mfec.api.model.user.response.UserRegisterResponse;
-import th.co.mfec.api.model.user.response.UserResponse;
+import th.co.mfec.api.model.user.request.*;
+import th.co.mfec.api.model.user.response.*;
 import th.co.mfec.api.repository.AddressRepository;
 import th.co.mfec.api.repository.UserProfileRepository;
 import th.co.mfec.api.repository.UserRepository;
 import th.co.mfec.api.security.util.JwtUtil;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -151,4 +149,73 @@ public class UserService {
 
     return userProfileResponse;
   }
+
+  @Transactional
+  public UserAddressResponse updateUserAddress(UserAddressRequest userAddressRequest) {
+    String username =
+        (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User user = userRepository.findByUsername(username);
+
+    List<Address> addresses = new ArrayList<>();
+    Address address;
+    for (AddressRequest addressRequest : userAddressRequest.getAddresses()) {
+      address = new Address();
+      address.setUser(user);
+      address.setLine1(addressRequest.getLine1());
+      address.setLine2(addressRequest.getLine2());
+      address.setPostcode(addressRequest.getPostcode());
+      address.setType(addressRequest.getType());
+      address.setPrefer(addressRequest.getPrefer());
+      address.setDeleteFlag('N');
+      address.setCreatedBy(user.getId());
+      address.setCreatedAt(new Date());
+      addresses.add(address);
+    }
+    addressRepository.saveAll(addresses);
+
+    UserAddressResponse userAddressResponse = new UserAddressResponse();
+    List<AddressResponse> responseList = new ArrayList<>();
+    AddressResponse addressResponse;
+    for (Address addr : addresses) {
+      addressResponse = new AddressResponse();
+      addressResponse.setLine1(addr.getLine1());
+      addressResponse.setLine2(addr.getLine2());
+      addressResponse.setPostcode(addr.getPostcode());
+      addressResponse.setType(addr.getType());
+      addressResponse.setPrefer(addr.getPrefer());
+      responseList.add(addressResponse);
+    }
+    userAddressResponse.setAddresses(responseList);
+
+    return userAddressResponse;
+  }
+
+  //  public UserProfileResponse getUserProfile(UserProfileRequest userProfileRequest) {
+  //    String username =
+  //            (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+  //    User user = userRepository.findByUsername(username);
+  //
+  //    UserProfile userProfile = new UserProfile();
+  //    userProfile.setUser(user);
+  //    userProfile.setFirstNameTh(userProfileRequest.getFirstNameTh());
+  //    userProfile.setLastNameTh(userProfileRequest.getLastNameTh());
+  //    userProfile.setFirstNameEn(userProfileRequest.getFirstNameEn());
+  //    userProfile.setLastNameEn(userProfileRequest.getLastNameEn());
+  //    userProfile.setMobileNumber(userProfileRequest.getMobileNumber());
+  //    userProfile.setBirthDate(userProfileRequest.getBirthDate());
+  //    userProfile.setDeleteFlag('N');
+  //    userProfile.setCreatedBy(user.getId());
+  //    userProfile.setCreatedAt(new Date());
+  //    userProfileRepository.save(userProfile);
+  //
+  //    UserProfileResponse userProfileResponse = new UserProfileResponse();
+  //    userProfileResponse.setFirstNameTh(userProfile.getFirstNameTh());
+  //    userProfileResponse.setLastNameTh(userProfile.getLastNameTh());
+  //    userProfileResponse.setFirstNameEn(userProfile.getFirstNameEn());
+  //    userProfileResponse.setLastNameEn(userProfile.getLastNameEn());
+  //    userProfileResponse.setMobileNumber(userProfile.getMobileNumber());
+  //    userProfileResponse.setBirthDate(userProfile.getBirthDate());
+  //
+  //    return userProfileResponse;
+  //  }
 }
