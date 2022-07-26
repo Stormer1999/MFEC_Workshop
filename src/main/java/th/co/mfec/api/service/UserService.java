@@ -190,32 +190,46 @@ public class UserService {
     return userAddressResponse;
   }
 
-  //  public UserProfileResponse getUserProfile(UserProfileRequest userProfileRequest) {
-  //    String username =
-  //            (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-  //    User user = userRepository.findByUsername(username);
-  //
-  //    UserProfile userProfile = new UserProfile();
-  //    userProfile.setUser(user);
-  //    userProfile.setFirstNameTh(userProfileRequest.getFirstNameTh());
-  //    userProfile.setLastNameTh(userProfileRequest.getLastNameTh());
-  //    userProfile.setFirstNameEn(userProfileRequest.getFirstNameEn());
-  //    userProfile.setLastNameEn(userProfileRequest.getLastNameEn());
-  //    userProfile.setMobileNumber(userProfileRequest.getMobileNumber());
-  //    userProfile.setBirthDate(userProfileRequest.getBirthDate());
-  //    userProfile.setDeleteFlag('N');
-  //    userProfile.setCreatedBy(user.getId());
-  //    userProfile.setCreatedAt(new Date());
-  //    userProfileRepository.save(userProfile);
-  //
-  //    UserProfileResponse userProfileResponse = new UserProfileResponse();
-  //    userProfileResponse.setFirstNameTh(userProfile.getFirstNameTh());
-  //    userProfileResponse.setLastNameTh(userProfile.getLastNameTh());
-  //    userProfileResponse.setFirstNameEn(userProfile.getFirstNameEn());
-  //    userProfileResponse.setLastNameEn(userProfile.getLastNameEn());
-  //    userProfileResponse.setMobileNumber(userProfile.getMobileNumber());
-  //    userProfileResponse.setBirthDate(userProfile.getBirthDate());
-  //
-  //    return userProfileResponse;
-  //  }
+  public UserProfileAddressesResponse getUserProfileAddress() {
+    String username =
+        (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User user = userRepository.findByUsername(username);
+
+    UserProfileAddressesResponse userProfileAddressesResponse = new UserProfileAddressesResponse();
+    UserResponse userResponse = new UserResponse();
+    userResponse.setId(user.getId());
+    userResponse.setUsername(user.getUsername());
+    userResponse.setExpiredDate(user.getExpiredDate());
+    userProfileAddressesResponse.setUser(userResponse);
+
+    UserProfileResponse userProfileResponse = new UserProfileResponse();
+    if (user.getUserProfile() != null) {
+      userProfileResponse.setFirstNameTh(user.getUserProfile().getFirstNameTh());
+      userProfileResponse.setLastNameTh(user.getUserProfile().getLastNameTh());
+      userProfileResponse.setFirstNameEn(user.getUserProfile().getFirstNameEn());
+      userProfileResponse.setLastNameEn(user.getUserProfile().getLastNameEn());
+      userProfileResponse.setMobileNumber(user.getUserProfile().getMobileNumber());
+      userProfileResponse.setBirthDate(user.getUserProfile().getBirthDate());
+    }
+    userProfileAddressesResponse.setProfile(userProfileResponse);
+
+    UserAddressResponse userAddressResponse = new UserAddressResponse();
+    List<AddressResponse> addresses = new ArrayList<>();
+    AddressResponse addressResponse;
+    if (user.getAddresses() != null) {
+      for (Address address : user.getAddresses()) {
+        addressResponse = new AddressResponse();
+        addressResponse.setLine1(address.getLine1());
+        addressResponse.setLine2(address.getLine2());
+        addressResponse.setPostcode(address.getPostcode());
+        addressResponse.setType(address.getType());
+        addressResponse.setPrefer(address.getPrefer());
+        addresses.add(addressResponse);
+      }
+    }
+    userAddressResponse.setAddresses(addresses);
+    userProfileAddressesResponse.setAddress(userAddressResponse);
+
+    return userProfileAddressesResponse;
+  }
 }

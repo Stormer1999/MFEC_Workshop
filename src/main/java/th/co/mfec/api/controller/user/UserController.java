@@ -67,4 +67,9 @@ public class UserController {
     return ResponseEntity.ok(
         new SuccessResponse<>(userService.updateUserAddress(userAddressRequest)));
   }
+
+  @GetMapping("/profile")
+  public ResponseEntity<SuccessResponse<UserProfileAddressesResponse>> profile() {
+    return ResponseEntity.ok(new SuccessResponse<>(userService.getUserProfileAddress()));
+  }
 }
